@@ -2,7 +2,7 @@
 marketplace_api.db 
 
 #ignore virtual enviroment
-*-venv/
+*_venv/
 
 **/__pycache__
 
