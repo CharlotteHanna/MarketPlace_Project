@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from db.database import engine
 from db import models
 from routers import conversations, messages, payments, products, users
+from auth import authentication
 
 # from auth import authentication
 # import logging  
@@ -9,6 +10,7 @@ from routers import conversations, messages, payments, products, users
 
 # logging.basicConfig(level=logging.INFO)  
 app = FastAPI()
+app.include_router(authentication.router)
 app.include_router(users.router)
 app.include_router(products.router)
 app.include_router(conversations.router)
