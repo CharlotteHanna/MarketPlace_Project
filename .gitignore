@@ -4,6 +4,8 @@ marketplace_api.db
 #ignore virtual enviroment
 *-venv/
 
+**/__pycache__
+
 # DB file
 marketplace_api.db
 *.db
