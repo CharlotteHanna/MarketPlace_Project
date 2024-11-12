@@ -1,11 +1,7 @@
 # ignore database
-marketplace_api.db 
+*.db 
 
 #ignore virtual enviroment
 *_venv/
 
 **/__pycache__
-
-# DB file
-marketplace_api.db
-*.db
