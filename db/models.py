@@ -72,3 +72,5 @@ class DbPayment(Base):
     payment_method = Column(String)
     paid_product = relationship("DbProduct",  foreign_keys=[paid_product_id], back_populates="payments")
 
+    #  paid_product = relationship("DbProduct",  foreign_keys=[paid_product_id], back_populates="payments")
+
