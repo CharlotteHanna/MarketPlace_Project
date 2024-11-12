@@ -80,6 +80,8 @@ class ConversationDisplay(BaseModel):
     desired_product_id:int
     potential_buyer_id:int
     messages: List[Message] = []
+    #seller_name
+    # buyer_name
     
     class Config:
         orm_mode = True

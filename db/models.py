@@ -11,7 +11,7 @@ class DbUser(Base):
     username = Column(String, unique=True)  # Unique username  
     email = Column(String, unique=True)     # Unique email  
     password = Column(String)
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)   #delete this attribute
     sold_product = relationship("DbProduct", primaryjoin="DbUser.user_id==DbProduct.seller_id")
     bought_product = relationship("DbProduct", primaryjoin="DbUser.user_id==DbProduct.buyer_id")
     conversations = relationship("DbConversation", back_populates="potential_buyer")

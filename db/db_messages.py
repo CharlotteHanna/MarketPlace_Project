@@ -13,7 +13,7 @@ from schemas import MessageBase
 def create_message(db:Session, request: MessageBase):
 #  exist_conversation = db.query(DbConversation).filter(DbConversation.id==request.conversation_id).first()
 #  if not exist_conversation:
-#   raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conversation not was found")
+#   call create_conversation from db_conversation
  
    new_message = DbMessage(
       conversation_id=request.conversation_id,

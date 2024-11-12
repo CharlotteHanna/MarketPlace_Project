@@ -10,6 +10,7 @@ from fastapi import HTTPException, status
 
 #Create conversation in DB
 def create_conversation(db: Session, request: ConversationBase):
+    # think how to combine conversation and messages creation but we need to check existing conversation by product_id and conversation_id and potential_buyer_id
     existing_conversation =db.query(DbConversation).filter(
             DbConversation.desired_product_id==request.desired_product_id).first()
 
