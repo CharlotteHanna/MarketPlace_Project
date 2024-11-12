@@ -1,5 +1,5 @@
 from typing import List  
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from schemas import ProductBase, ProductDisplay, UserBase
 from sqlalchemy.orm import Session
 from db.database import get_db
@@ -19,9 +19,9 @@ def create_product(request: ProductBase, db: Session = Depends(get_db), current_
 
 #Use read Product functionality from db_products file
         #return all products
-@router.get('/', response_model=List[ProductDisplay])
-def get_all_products(db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
-        return db_products.get_all_products(db)
+# @router.get('/', response_model=List[ProductDisplay])
+# def get_all_products(db: Session = Depends(get_db)):#, current_user: UserBase = Depends(get_current_user)
+#         return db_products.get_all_products(db)
    
 
 
@@ -42,4 +42,27 @@ def update_product(id: int, request: ProductBase, db: Session = Depends(get_db),
 @router.delete('/{id}')
 def delete_product(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
         return db_products.delete_product(db, id)
+
+
+
+
+@router.get('/', response_model=List[ProductDisplay])
+def get_all_products(db: Session = Depends(get_db)):
+        return db_products.get_all_products(db)
+
+
+@router.get('/search_by_name_and_description/{key_word}',response_model=List[ProductDisplay]) # add throw exception also
+def get_products_by_name_and_description( key_word: str, db: Session = Depends(get_db)):
+     products = db_products.search_products_by_name_and_description( db, key_word)   
+     if not products:
+             raise HTTPException(status_code=404)#, detail="No products found matching the search term"
+     return products
+
+
+@router.get('/search_by_categroy/{kew_word}', response_model = List[ProductDisplay])
+def get_products_by_category( key_word:str, db: Session= Depends(get_db)):
+        products = db_products.search_products_by_category(db, key_word)
+        if not products:
+                raise HTTPException(status_code=404)
+        return products
    

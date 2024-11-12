@@ -2,6 +2,7 @@ from db.models import DbProduct
 from sqlalchemy.orm import Session
 from schemas import ProductBase
 from fastapi import HTTPException, status
+from sqlalchemy import or_
 
 
 #Functionality in Database
@@ -25,9 +26,11 @@ def create_product(db: Session, request: ProductBase):
     return new_product
 
 
-#Return all products from DB
-def get_all_products(db: Session):
-    return db.query(DbProduct).all()
+# #Return all products from DB
+# def get_all_products(db: Session):
+#     return db.query(DbProduct).all()
+    
+
         
 
  #Return  Product from DB with specifiec ID         
@@ -68,4 +71,31 @@ def delete_product(db: Session, id: int):
     db.delete(product)
     db.commit()
     return {'message': f'Product with id: {id} was deleted'}  # Return the deleted product object  
-   
+
+
+
+
+#Return all products which not sold from DB
+def get_all_products(db:Session):
+    return db.query(DbProduct).filter(~DbProduct.product_status.ilike('sold')).all()
+
+
+# Return products by name
+def search_products_by_name_and_description(db:Session, key_word:str):
+    search_pattern = f"%{key_word}%"
+    return db.query(DbProduct).filter(
+        ~DbProduct.product_status.ilike('sold'),
+        or_(
+        DbProduct.product_name.ilike(search_pattern),
+        DbProduct.description.ilike(search_pattern)
+        )
+    ).all()
+
+def search_products_by_category( db:Session, kew_word:str):
+    search_pattern = f'%{kew_word}%'
+    return db.query(DbProduct).filter(
+        ~DbProduct.product_status.ilike('sold'),
+        DbProduct.product_category.ilike(search_pattern)
+        ).all()
+
+
