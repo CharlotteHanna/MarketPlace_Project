@@ -1,0 +1,9 @@
+# ignore database
+marketplace_api.db 
+
+#ignore virtual enviroment
+*-venv/
+
+# DB file
+marketplace_api.db
+*.db
