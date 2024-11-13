@@ -1,7 +1,7 @@
 import os
 import shutil
 import string
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 import random
 
 from auth.oauth2 import get_current_user
@@ -17,7 +17,7 @@ def upload_image(upload_file: UploadFile = File(...), current_user: UserBase = D
     
     letter = string.ascii_letters
     rand_string = ''.join(random.choice(letter) for i in range(6))
-    new = f'_{rand_string}'
+    new = f'_{rand_string}.'
     new_filename = new.join(upload_file.filename.rsplit('.', 1))
     path = f'images/{new_filename}'  #just new_filename #the rest is similar with while and return
     
@@ -38,7 +38,11 @@ def upload_image(upload_file: UploadFile = File(...), current_user: UserBase = D
 #     return (path)
 
 @router.get('/get_image/{name}')
-def get_image_by_name(name: str):  #, db: Session = Depends(get_db)
+def get_image_by_name(name: str):
+    # image_path = f"images/{name}"
+    
+    # if not os.path.isfile(image_path):  
+    #     raise HTTPException(status_code=404, detail="Image not found")
     image_url = f"/image/download/{name}"
     return {'image_url': image_url}
 

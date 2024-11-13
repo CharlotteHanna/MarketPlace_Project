@@ -1,5 +1,6 @@
 from typing import List  
 from fastapi import APIRouter, Depends, HTTPException
+from db.models import DbUser
 from schemas import ProductBase, ProductDisplay, UserBase
 from sqlalchemy.orm import Session
 from db.database import get_db
