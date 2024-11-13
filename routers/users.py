@@ -27,7 +27,9 @@ def get_all_users(db: Session = Depends(get_db), current_user: UserBase = Depend
       #return User with conditions
 @router.get('/{id}', response_model=UserDisplay)
 def get_user(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
+        
         return db_users.get_user(db, id)
+       
 
 
 #Use Update User functionality from db_users file

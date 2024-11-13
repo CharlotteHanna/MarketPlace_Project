@@ -23,6 +23,8 @@ def create_user(db: Session, request: UserBase):
         db.refresh(new_user)
         return new_user
            
+class ThisIsMyOwnNotFoundException(Exception):
+    pass
 
 #Return all users from DB   
 def get_all_users(db: Session):
@@ -32,7 +34,7 @@ def get_all_users(db: Session):
 def get_user(db: Session, user_id: int):
     user = db.query(DbUser).filter(DbUser.user_id == user_id).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {user_id} was not found")
+        raise ThisIsMyOwnNotFoundException()
     return user
 
 def get_user_by_username(db: Session, username: str):

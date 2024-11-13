@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from db.database import engine
 from db import models
-from routers import conversations, images, messages, payments, products, users
+from routers import conversations, messages, payments, products, users, images, categories
 from auth import authentication
 from fastapi.staticfiles import StaticFiles
 
@@ -14,10 +14,12 @@ app = FastAPI()
 app.include_router(authentication.router)
 app.include_router(images.router)
 app.include_router(users.router)
+app.include_router(categories.router)
 app.include_router(products.router)
 app.include_router(conversations.router)
 app.include_router(messages.router)
 app.include_router(payments.router)
+
 # app.include_router(authentication.router)
 
 
