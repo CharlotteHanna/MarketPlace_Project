@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from db.database import engine
 from db import models
-from routers import conversations, messages, payments, products, users, categories
+from routers import conversations, messages, payments, products, users, images, categories
 from auth import authentication
+from fastapi.staticfiles import StaticFiles
 
 # from auth import authentication
 # import logging  
@@ -11,6 +12,7 @@ from auth import authentication
 # logging.basicConfig(level=logging.INFO)  
 app = FastAPI()
 app.include_router(authentication.router)
+app.include_router(images.router)
 app.include_router(users.router)
 app.include_router(categories.router)
 app.include_router(products.router)
@@ -28,6 +30,7 @@ app.include_router(payments.router)
 models.Base.metadata.create_all(engine)
 
 
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 
 
