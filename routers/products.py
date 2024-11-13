@@ -18,10 +18,26 @@ def create_product(request: ProductBase, db: Session = Depends(get_db), current_
     
 
 #Use read Product functionality from db_products file
-        #return all products
-# @router.get('/', response_model=List[ProductDisplay])
-# def get_all_products(db: Session = Depends(get_db)):#, current_user: UserBase = Depends(get_current_user)
-#         return db_products.get_all_products(db)
+        #return all products which not sold
+@router.get('/', response_model=List[ProductDisplay])
+def get_all_products(db: Session = Depends(get_db)):
+        return db_products.get_all_products(db)
+
+# search by product name and description
+@router.get('/search_by_name_and_description/{key_word}',response_model=List[ProductDisplay]) # add throw exception also
+def get_products_by_name_and_description( key_word: str, db: Session = Depends(get_db)):
+     products = db_products.search_products_by_name_and_description( db, key_word)   
+     if not products:
+             raise HTTPException(status_code=404)#, detail="No products found matching the search term"
+     return products
+
+#search by category name
+@router.get('/search_by_categroy/{kew_word}', response_model = List[ProductDisplay])
+def get_products_by_category( key_word:str, db: Session= Depends(get_db)):
+        products = db_products.search_products_by_category(db, key_word)
+        if not products:
+                raise HTTPException(status_code=404)
+        return products
    
 
 
@@ -46,23 +62,5 @@ def delete_product(id: int, db: Session = Depends(get_db), current_user: UserBas
 
 
 
-@router.get('/', response_model=List[ProductDisplay])
-def get_all_products(db: Session = Depends(get_db)):
-        return db_products.get_all_products(db)
 
-
-@router.get('/search_by_name_and_description/{key_word}',response_model=List[ProductDisplay]) # add throw exception also
-def get_products_by_name_and_description( key_word: str, db: Session = Depends(get_db)):
-     products = db_products.search_products_by_name_and_description( db, key_word)   
-     if not products:
-             raise HTTPException(status_code=404)#, detail="No products found matching the search term"
-     return products
-
-
-@router.get('/search_by_categroy/{kew_word}', response_model = List[ProductDisplay])
-def get_products_by_category( key_word:str, db: Session= Depends(get_db)):
-        products = db_products.search_products_by_category(db, key_word)
-        if not products:
-                raise HTTPException(status_code=404)
-        return products
    
