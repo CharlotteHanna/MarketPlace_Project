@@ -25,17 +25,23 @@ class DbProduct(Base):
     description = Column(String)
     price = Column(Integer)  # Price is in cents   
     image_url = Column(String)
-    product_category = Column(String)
+    product_category_id = Column(Integer, ForeignKey('categories.category_id'))
     product_status = Column(String)
     seller_id = Column(Integer, ForeignKey('users.user_id'))  # FK for seller
     buyer_id = Column(Integer, ForeignKey('users.user_id'), nullable=True)  # FK for buyer, allow buyer_id to be null
     seller = relationship("DbUser", foreign_keys=[seller_id], back_populates="sold_product")
     buyer = relationship("DbUser",  foreign_keys=[buyer_id], back_populates="bought_product")
+    product_category = relationship("DbCategory",  foreign_keys=[product_category_id], back_populates="product")
     product_conversation = relationship("DbConversation",  back_populates="product")
     payments = relationship("DbPayment",  back_populates="paid_product")
 
 
-
+# Category Table
+class DbCategory(Base):
+    __tablename__ = "categories"
+    category_id = Column(Integer, primary_key=True, index=True) #primary key
+    category_name = Column(String)
+    product = relationship("DbProduct", back_populates="product_category")
 
 
 

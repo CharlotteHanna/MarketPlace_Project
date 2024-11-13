@@ -16,7 +16,7 @@ def create_product(db: Session, request: ProductBase):
             seller_id=request.seller_id,
             buyer_id=request.buyer_id,
             image_url=request.image_url,
-            product_category=request.product_category,
+            product_category_id=request.product_category_id,
             product_status=request.product_status
     )
         
@@ -75,7 +75,7 @@ def update_product(db: Session, id: int, request: ProductBase):
             DbProduct.description: request.description,
             DbProduct.price: request.price,
             DbProduct.image_url: request.image_url,
-            DbProduct.product_category: request.product_category,
+            DbProduct.product_category_id: request.product_category_id,
             DbProduct.product_status: request.product_status
         })
     db.commit()

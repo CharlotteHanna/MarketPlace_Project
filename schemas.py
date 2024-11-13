@@ -1,6 +1,7 @@
 
 from datetime import datetime
-from typing import List
+from typing import Annotated, List, Literal
+from fastapi import Body
 from pydantic import BaseModel
 
 
@@ -27,14 +28,28 @@ class UserDisplay(BaseModel):
         orm_mode = True
 
 
+### Category ###
+# Base schema for categories
+class CategoryBase(BaseModel):
+    category_name: str
+
+# Schema for displaying a category 
+class CategoryDisplay(BaseModel):
+    category_name: str
+    class Config:
+        orm_mode = True
+        
+
+
+
 ### Product ###
 # Base schema for products
 class ProductBase(BaseModel):
     product_name: str
-    description: str
+    description: Annotated[str, Body(min_length= 10, max_length= 500)]
     price: int #search for library
     image_url: str
-    product_category: str
+    product_category_id: int
     product_status: str
     seller_id: int
     buyer_id: int
@@ -48,7 +63,7 @@ class ProductDisplay(BaseModel):
     description: str
     price: int
     image_url: str
-    product_category: str
+    product_category: CategoryDisplay
     product_status: str
     seller: UserDisplay
     class Config:

@@ -27,7 +27,19 @@ def get_all_users(db: Session = Depends(get_db), current_user: UserBase = Depend
       #return User with conditions
 @router.get('/{id}', response_model=UserDisplay)
 def get_user(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
-        return db_users.get_user(db, id)
+        try:
+                return db_users.get_user(db, id)
+        except db_users.ThisIsMyOwnNotFoundException:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {user_id} was not found")
+        #except python.DatabaseConnectionError:
+                
+        except:
+                sdgfds
+        
+        user = db_users.get_user(db, id)
+        if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {user_id} was not found")
+        return user
 
 
 #Use Update User functionality from db_users file
