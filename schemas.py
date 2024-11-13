@@ -45,10 +45,10 @@ class CategoryDisplay(BaseModel):
 ### Product ###
 # Base schema for products
 class ProductBase(BaseModel):
-    product_name: str
-    description: Annotated[str, Body(min_length= 10, max_length= 500)]
-    price: int #search for library
-    image_url: str
+    product_name: Annotated[str, Body(min_length= 5, max_length= 25)]
+    description: Annotated[str, Body(min_length= 5, max_length= 500)]
+    price: Annotated[int, Body(gt=0)]
+    image_url: Annotated[str, Body(min_length= 5)]
     product_category_id: int
     product_status: str
     seller_id: int
