@@ -26,9 +26,31 @@ def create_product(db: Session, request: ProductBase):
     return new_product
 
 
-# #Return all products from DB
-# def get_all_products(db: Session):
-#     return db.query(DbProduct).all()
+#Return all products which not sold from DB
+def get_all_products(db:Session):
+    return db.query(DbProduct).filter(~DbProduct.product_status.ilike('sold')).all()
+    
+
+
+# Return products by name and description
+def search_products_by_name_and_description(db:Session, key_word:str):
+    search_pattern = f"%{key_word}%"
+    return db.query(DbProduct).filter(
+        ~DbProduct.product_status.ilike('sold'),
+        or_(
+        DbProduct.product_name.ilike(search_pattern),
+        DbProduct.description.ilike(search_pattern)
+        )
+    ).all()
+
+#Search by category
+def search_products_by_category( db:Session, kew_word:str):
+    search_pattern = f'%{kew_word}%'
+    return db.query(DbProduct).filter(
+        ~DbProduct.product_status.ilike('sold'),
+        DbProduct.product_category.ilike(search_pattern)
+        ).all()
+
     
 
         
@@ -75,27 +97,5 @@ def delete_product(db: Session, id: int):
 
 
 
-#Return all products which not sold from DB
-def get_all_products(db:Session):
-    return db.query(DbProduct).filter(~DbProduct.product_status.ilike('sold')).all()
-
-
-# Return products by name
-def search_products_by_name_and_description(db:Session, key_word:str):
-    search_pattern = f"%{key_word}%"
-    return db.query(DbProduct).filter(
-        ~DbProduct.product_status.ilike('sold'),
-        or_(
-        DbProduct.product_name.ilike(search_pattern),
-        DbProduct.description.ilike(search_pattern)
-        )
-    ).all()
-
-def search_products_by_category( db:Session, kew_word:str):
-    search_pattern = f'%{kew_word}%'
-    return db.query(DbProduct).filter(
-        ~DbProduct.product_status.ilike('sold'),
-        DbProduct.product_category.ilike(search_pattern)
-        ).all()
 
 
